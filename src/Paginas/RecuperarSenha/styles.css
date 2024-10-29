@@ -5,10 +5,11 @@
     min-height: 70vh;
     max-height: 90vh;
     min-width: 50%;
-    max-width: 60%; 
-    margin: 0 auto; 
-    padding: 0px 20px 30px 10px; 
+    max-width: 60%;
+    margin: 0 auto;
+    padding: 0px 20px 30px 10px;
     background-color: #e7e7e7;
+    box-sizing: border-box; /* Inclui padding e border no cálculo da largura e altura */
 }
 
 .body__contentRecuperarSenha .body__contentRecuperarSenha--text {
@@ -25,7 +26,7 @@
     justify-content: center;
     flex: 1;
     margin-top: 30px;
-    padding:10px 60px 10px;
+    padding: 10px 60px 10px;
     background-color: #babfd2;
 }
 
@@ -40,13 +41,13 @@
 }
 
 .wrapperRecuperarSenha {
-    max-width: 300px;  
+    max-width: 300px;
 }
 
 .columnRecuperarSenha {
     display: flex;
     justify-content: center;
-    align-items: center;    
+    align-items: center;
     flex: 1;
 }
 
@@ -60,4 +61,37 @@
 
 formRecuperarSenha {
     padding-bottom: 50px;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+    .body__contentRecuperarSenha {
+        flex-direction: column; /* Muda para coluna em dispositivos móveis */
+        min-width: 90%; /* Ajusta a largura mínima */
+        max-width: 90%; /* Ajusta a largura máxima */
+        padding: 10px; /* Ajusta o padding */
+    }
+
+    .body__contentRecuperarSenha .body__contentRecuperarSenha--text {
+        padding: 10px; /* Ajusta o padding interno */
+    }
+
+    .body__contentRecuperarSenha .body__contentRecuperarSenha--form {
+        padding: 10px; /* Ajusta o padding interno */
+    }
+
+    .containerRecuperarSenha {
+        flex-direction: column; /* Muda para coluna em dispositivos móveis */
+        margin-top: 20px; /* Ajusta o espaço acima */
+        width: 100%; /* Ajusta a largura para preencher a tela */
+    }
+
+    .wrapperRecuperarSenha {
+        max-width: 100%; /* Ajusta a largura máxima */
+    }
+
+    .rowRecuperarSenha {
+        flex-direction: column; /* Muda para coluna em dispositivos móveis */
+        margin-top: 10px; /* Ajusta o espaço acima */
+    }
 }

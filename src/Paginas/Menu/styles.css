@@ -2,18 +2,18 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; 
+  height: 100vh;
   margin: 0;
-  background-color: #e7e7e7; 
+  background-color: #e7e7e7;
 }
 
 .container {
   display: flex;
   flex-direction: row;
-  align-items: flex-startcenter; 
-  justify-content: space-around; 
+  align-items: flex-start;
+  justify-content: space-around;
   background-color: #babfd2;
-  padding:3% 95% 3% 3%;
+  padding: 3% 95% 3% 3%;
   margin-top: 30px;
   flex: 1;
   border-radius: 20px;
@@ -26,29 +26,56 @@ body {
 
 .disabled-text {
   font-size: 12px;
-  color: #808080; 
+  color: #808080;
 }
+
 .menu-item {
   flex: 1;
   margin-right: 60px;
   margin-left: 60px;
   border-radius: 20px;
-  padding: 20px 30px 20px 30px;
+  padding: 20px 30px;
   background-color: #e7e7e7;
 }
 
 .menu-link {
-  font-family: 'Open Sans', sans-serif; 
+  font-family: 'Open Sans', sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 19px;
   line-height: 22px;
   width: 100%;
   margin: 10px 0px;
-  color: #100f1d; 
-  text-decoration: none; 
+  color: #100f1d;
+  text-decoration: none;
 }
 
 .menu-link:hover {
   text-decoration: underline;
+}
+
+/* Ajustes para dispositivos móveis */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column !important;
+    width: 90% !important;
+    padding: 20px 10px !important; /* Mais espaçamento nas laterais */
+    margin-top: 250px !important;  /* Espaço abaixo do header */
+    margin-bottom: 80px !important; /* Espaço acima do footer */
+  }
+
+  .menu-item {
+    margin: 10px 0 !important;
+    width: 100% !important;
+    padding: 15px 20px !important;
+  }
+
+  .disabled-text {
+    font-size: 10px !important; /* Reduz o tamanho da fonte para telas menores */
+  }
+
+  .menu-link {
+    font-size: 16px !important;
+    padding: 5px 10px !important;
+  }
 }

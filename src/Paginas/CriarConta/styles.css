@@ -4,65 +4,34 @@
     min-height: 50%;
     max-height: 90%;
     min-width: 50%;
-    max-width: 80%; 
+    max-width: 80%;
     margin: auto;
     margin-top: 100px;
-    padding: 0px 20px 30px 10px; 
+    padding: 0px 20px 30px 10px;
     background-color: #e7e7e7;
 }
 
-.body__contentcriarconta .body__contentcriarconta--text {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+/* Ajustes internos */
+.body__contentcriarconta .body__contentcriarconta--text,
+.body__contentcriarconta .body__contentcriarconta--form {
     flex: 1;
     padding: 10px 100px 40px;
 }
 
-.body__contentcriarconta .body__contentcriarconta--form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    flex: 1;
-    margin-top: 30px;
-    padding:10px 60px 10px;
-    background-color: #babfd2;
-}
+/* Estilos específicos para dispositivos móveis */
+@media (max-width: 768px) {
+    .body__contentcriarconta {
+        flex-direction: column !important;
+        width: 90% !important;
+        padding: 20px 10px !important; /* Padding ajustado */
+        margin-top: 500px !important;  /* Espaço extra abaixo do header */
+        margin-bottom: 80px !important; /* Espaço extra acima do footer */
+    }
 
-.body__contentcriarconta .body__contentcriarconta--form span {
-    font-weight: bold;
-    font-size: 18px;
-}
-
-.containercriarconta {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    width: 80%;
-    margin: 0 auto;
-    margin-top: 10vh;
-}
-
-.wrappercriarconta {
-    max-width: 300px;  
-}
-
-.columncriarconta {
-    display: flex;
-    justify-content: center;
-    align-items: center;    
-    flex: 1;
-}
-
-.rowcriarconta {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
-}
-
-form {
-    padding-bottom: 30px;
+    .body__contentcriarconta .body__contentcriarconta--text,
+    .body__contentcriarconta .body__contentcriarconta--form {
+        padding: 10px 20px !important;
+        margin: 0 auto !important;
+        width: 100% !important;
+    }
 }
