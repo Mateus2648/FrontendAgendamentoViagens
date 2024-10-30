@@ -1,24 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import './styles.css';
-import { api } from '../../Services/api';
-import { useNavigate } from 'react-router-dom';
-import { Header } from '../../Componentes/Header/Header';
-import { Footer } from '../../Componentes/Footer/Footer.jsx';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Footer } from "../../Componentes/Footer/Footer.jsx";
+import { Header } from "../../Componentes/Header/Header";
+import { api } from "../../Services/api";
+import "./styles.css";
 
 const ConsultaViagem = () => {
-  const [consulta, setConsulta] = useState('');
+  const [consulta, setConsulta] = useState("");
   const [viagens, setViagens] = useState([]);
   const [viagensFiltradas, setViagensFiltradas] = useState([]);
   const [viagemSelecionada, setViagemSelecionada] = useState(null);
   const navigate = useNavigate();
+  const userData = JSON.parse(localStorage.getItem("userData"));
+
+  // Verifica se userData existe e redireciona para a tela de login se não existir
+  useEffect(() => {
+    if (!userData) {
+      navigate("/login"); // Redireciona para a página de login
+    }
+  }, [userData, navigate]);
 
   useEffect(() => {
     const fetchViagens = async () => {
       try {
-        const response = await api.get('viagem/');
+        const response = await api.get("viagem/");
         setViagens(response.data);
       } catch (error) {
-        console.error('Erro ao buscar viagens:', error);
+        console.error("Erro ao buscar viagens:", error);
       }
     };
 
@@ -44,34 +52,47 @@ const ConsultaViagem = () => {
   };
 
   const handleEditarViagem = () => {
-    navigate('/alteracao-viagem', { state: { viagem: viagemSelecionada } });
+    navigate("/alteracao-viagem", { state: { viagem: viagemSelecionada } });
   };
 
   const handleDeletarViagem = async () => {
     try {
       const response = await api.delete(`viagem/${viagemSelecionada.id}`);
       if (response.status === 204) {
-        setViagens(viagens.filter((viagem) => viagem.id !== viagemSelecionada.id));
+        setViagens(
+          viagens.filter((viagem) => viagem.id !== viagemSelecionada.id)
+        );
         setViagemSelecionada(null);
-        setViagensFiltradas(viagensFiltradas.filter((viagem) => viagem.id !== viagemSelecionada.id));
-        alert('Viagem deletada com sucesso!');
+        setViagensFiltradas(
+          viagensFiltradas.filter(
+            (viagem) => viagem.id !== viagemSelecionada.id
+          )
+        );
+        alert("Viagem deletada com sucesso!");
       } else {
-        alert('Erro ao deletar viagem');
+        alert("Erro ao deletar viagem");
       }
     } catch (error) {
-      console.error('Erro ao deletar viagem:', error);
+      console.error("Erro ao deletar viagem:", error);
     }
   };
 
   return (
     <div>
       <Header />
-      <div className='consul'>
+      <div className="consul">
         <form onSubmit={(e) => e.preventDefault()}>
           <h2>Consultar Viagens</h2>
           <label>Nome do Paciente </label>
-          <input type='text' id="consultaNome" value={consulta} onChange={handleConsultaChange} />
-          <button type="button" onClick={handlePesquisar}>Pesquisar</button>
+          <input
+            type="text"
+            id="consultaNome"
+            value={consulta}
+            onChange={handleConsultaChange}
+          />
+          <button type="button" onClick={handlePesquisar}>
+            Pesquisar
+          </button>
         </form>
         {viagensFiltradas.length > 0 && (
           <table>
@@ -86,7 +107,12 @@ const ConsultaViagem = () => {
                 <tr key={viagem.id}>
                   <td>{viagem.nome_paciente}</td>
                   <td>
-                    <button type="button" onClick={() => handleViagemSelecionada(viagem)}>Selecionar</button>
+                    <button
+                      type="button"
+                      onClick={() => handleViagemSelecionada(viagem)}
+                    >
+                      Selecionar
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -107,14 +133,24 @@ const ConsultaViagem = () => {
             <p>Observações: {viagemSelecionada.obs}</p>
             {viagemSelecionada.ac && (
               <>
-                <p>Nome do Acompanhante: {viagemSelecionada.nome_acompanhante}</p>
+                <p>
+                  Nome do Acompanhante: {viagemSelecionada.nome_acompanhante}
+                </p>
                 <p>RG do Acompanhante: {viagemSelecionada.rg_acompanhante}</p>
-                <p>Endereço do Acompanhante: {viagemSelecionada.end_acompanhante}</p>
-                <p>Ponto do Acompanhante: {viagemSelecionada.ponto_acompanhante}</p>
+                <p>
+                  Endereço do Acompanhante: {viagemSelecionada.end_acompanhante}
+                </p>
+                <p>
+                  Ponto do Acompanhante: {viagemSelecionada.ponto_acompanhante}
+                </p>
               </>
             )}
-            <button type="button" onClick={handleEditarViagem}>Editar</button>
-            <button type="button" onClick={handleDeletarViagem}>Deletar</button>
+            <button type="button" onClick={handleEditarViagem}>
+              Editar
+            </button>
+            <button type="button" onClick={handleDeletarViagem}>
+              Deletar
+            </button>
           </div>
         )}
       </div>
@@ -124,4 +160,3 @@ const ConsultaViagem = () => {
 };
 
 export { ConsultaViagem };
-
