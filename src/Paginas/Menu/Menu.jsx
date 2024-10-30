@@ -1,56 +1,67 @@
-import React from 'react';
-import './styles.css';
-import iconMotorista from '../../Assets/Imagens/motorista.png';
-import iconViagem from '../../Assets/Imagens/viagem.png';
-import iconUsuario from '../../Assets/Imagens/gerir-usuario.png';
-import { Header } from '../../Componentes/Header/Header.jsx';
-import { Footer } from '../../Componentes/Footer/Footer.jsx'
-
+import React, { useEffect } from "react"; // Importando useEffect do React
+import { useNavigate } from "react-router-dom"; // Importando useNavigate do react-router-dom
+import iconUsuario from "../../Assets/Imagens/gerir-usuario.png";
+import iconMotorista from "../../Assets/Imagens/motorista.png";
+import iconViagem from "../../Assets/Imagens/viagem.png";
+import { Footer } from "../../Componentes/Footer/Footer.jsx";
+import { Header } from "../../Componentes/Header/Header.jsx";
+import "./styles.css";
 
 const Menu = () => {
-    const isAdmin = localStorage.getItem("userData.roles") === "1";
-  
-    return (
-        <div>
-            <Header />
-            <div class="container">
-                <div class="menu-item">
-                    <a href="/cadastro-viagem">
-                        <img src={iconViagem} alt="viagem" width="150" height="150" />
-                        <br />
-                        <strong class="menu-link">Cadastrar Viagem</strong>
-                    </a>
-                </div>
-                <div class="menu-item">
-                    <a href="/cadastro-motorista">
-                        <img src={iconMotorista} alt="motorista" width="150" height="150" />
-                        <br />
-                        <strong class="menu-link">Cadastrar Motorista</strong>
-                    </a>
-                </div>
-                <div></div>
-                <div class="menu-item">
-                    {isAdmin ? (
-                        <a href="/consulta-admistrador">
-                            <img src={iconUsuario} alt="usuario" width="150" height="150" />
-                            <br />
-                            <strong class="menu-link">Gerir Usuários</strong>
-                        </a>
-                    ) : (
-                        <div class="disabled-link">
-                            <img src={iconUsuario} alt="usuario" width="150" height="150" />
-                            <br/>
-                            <strong>Gerir Usuários</strong>
-                            <br/>
-                            <span class="disabled-text">Apenas administradores podem acessar</span>
-                        </div>
-                    )}
-                </div>
-            </div>
-            <Footer />
-        </div>
-    );
-    
-}
+  const navigate = useNavigate();
+  const userData = JSON.parse(localStorage.getItem("userData"));
 
-export { Menu }
+  // Verifica se userData existe e redireciona para a tela de login se não existir
+  useEffect(() => {
+    if (!userData) {
+      navigate("/login"); // Redireciona para a página de login
+    }
+  }, [userData, navigate]);
+
+  const isAdmin = userData && userData[0].roles === 2;
+
+  return (
+    <div>
+      <Header />
+      <div className="container">
+        <div className="menu-item">
+          <a href="/cadastro-viagem">
+            <img src={iconViagem} alt="viagem" width="150" height="150" />
+            <br />
+            <strong className="menu-link">Cadastrar Viagem</strong>
+          </a>
+        </div>
+        <div className="menu-item">
+          <a href="/cadastro-motorista">
+            <img src={iconMotorista} alt="motorista" width="150" height="150" />
+            <br />
+            <strong className="menu-link">Cadastrar Motorista</strong>
+          </a>
+        </div>
+        <div></div>
+        <div class="menu-item">
+          {isAdmin ? (
+            <a href="/consulta-administrador">
+              <img src={iconUsuario} alt="usuario" width="150" height="150" />
+              <br />
+              <strong className="menu-link">Gerir Usuários</strong>
+            </a>
+          ) : (
+            <div className="disabled-link">
+              <img src={iconUsuario} alt="usuario" width="150" height="150" />
+              <br />
+              <strong>Gerir Usuários</strong>
+              <br />
+              <span className="disabled-text">
+                Apenas administradores podem acessar
+              </span>
+            </div>
+          )}
+        </div>
+      </div>
+      <Footer />
+    </div>
+  );
+};
+
+export { Menu };

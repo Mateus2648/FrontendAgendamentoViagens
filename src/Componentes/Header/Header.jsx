@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "./styles.css";
-import usuerOn from "../../Assets/Imagens/usuerOn.png";
 import logo from "../../Assets/Imagens/logo-best.png";
+import usuerOn from "../../Assets/Imagens/usuerOn.png";
 import { AccessibilityButton } from "../AccessibilityButton/accessibilityButton"; // Importe o botão de acessibilidade
+import "./styles.css";
 
 const Header = () => {
   const [userInfo, setUserInfo] = useState(null);
@@ -15,7 +15,7 @@ const Header = () => {
       const userDataArray = JSON.parse(userData);
       const { id, nome, email, roles } = userDataArray[0];
       setUserInfo({ id, nome, email, roles });
-      setIsAdmin(roles);
+      setIsAdmin(roles === 2); //alterado
     } else {
       setUserInfo(null);
       setIsAdmin(false);
@@ -23,7 +23,7 @@ const Header = () => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("userData");
+    localStorage.removeItem("userData"); // Remove os dados do usuário
     setUserInfo(null);
     setIsAdmin(false);
   };
@@ -34,21 +34,34 @@ const Header = () => {
         <div className="header__content">
           <nav>
             <figure>
-              <Link to="/">
-                <img src={logo} alt="Saúde Tour" title="Saúde Tour" />
-              </Link>
+              {userInfo && (
+                <Link to="/menu">
+                  <img src={logo} alt="Saúde Tour" title="Saúde Tour" />
+                </Link>
+              )}
+              {!userInfo && (
+                <Link to="/login">
+                  <img src={logo} alt="Saúde Tour" title="Saúde Tour" />
+                </Link>
+              )}
             </figure>
 
             <div className="nav__button">
-              {userInfo && <Link to="/cadastro-viagem">Cadastro de Viagens</Link>}
-              {userInfo && <Link to="/cadastro-motorista">Cadastro de Motorista</Link>}
-              {userInfo && <Link to="/consulta-viagem">Consulta</Link>}
-              {userInfo && <Link to="/consulta-administrador">Adm</Link>}
+              {userInfo && (
+                <Link to="/cadastro-viagem">Cadastro de Viagens</Link>
+              )}
+              {userInfo && (
+                <Link to="/cadastro-motorista">Cadastro de Motorista</Link>
+              )}
+              {userInfo && <Link to="/consulta-viagem">Consultar Viagem</Link>}
+              {isAdmin && (
+                <Link to="/consulta-administrador">Consultar Usuários</Link>
+              )}
 
               {userInfo ? (
                 <div className="user-info">
                   <figure>
-                    <Link to="/alteracao-cadastro">
+                    <Link to="/menu">
                       <img
                         className="image-name"
                         src={usuerOn}
@@ -58,7 +71,7 @@ const Header = () => {
                     </Link>
                   </figure>
                   <span className="user-name">{userInfo.nome}</span>
-                  <Link to="/login" onClick={handleLogout}>
+                  <Link to="/" onClick={handleLogout}>
                     Sair
                   </Link>
                 </div>
@@ -67,7 +80,6 @@ const Header = () => {
               )}
             </div>
           </nav>
-
           {/* Adicionando o botão de acessibilidade */}
           <AccessibilityButton />
         </div>

@@ -1,16 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import './styles.css';
-import { api } from '../../Services/api';
-import { Header } from '../../Componentes/Header/Header';
-import { Footer } from '../../Componentes/Footer/Footer';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Footer } from "../../Componentes/Footer/Footer";
+import { Header } from "../../Componentes/Header/Header";
+import { api } from "../../Services/api";
+import "./styles.css";
 
 const ConsultaAdministrador = () => {
-  const [consultaNomeUsuario, setConsultaNomeUsuario] = useState('');
+  const [consultaNomeUsuario, setConsultaNomeUsuario] = useState("");
   const [usuariosFiltrados, setUsuariosFiltrados] = useState([]);
   const [usuarioSelecionado, setUsuarioSelecionado] = useState(null);
   const [loading, setLoading] = useState(false); // Adicionando um estado para controle de carregamento
   const navigate = useNavigate();
+  const userData = JSON.parse(localStorage.getItem("userData"));
+  // Verifica se userData existe e redireciona para a tela de login se não existir
+  useEffect(() => {
+    if (!userData) {
+      navigate("/login"); // Redireciona para a página de login
+    }
+  }, [userData, navigate]);
 
   const handleConsultaNomeUsuarioChange = (e) => {
     setConsultaNomeUsuario(e.target.value);
@@ -19,41 +26,45 @@ const ConsultaAdministrador = () => {
   const handleConsultarUsuario = async () => {
     try {
       setLoading(true);
-      const response = await api.get('usuario');
+      const response = await api.get("usuario");
       const usuarios = response.data;
-      const usuariosFiltrados = usuarios.filter(usuario =>
+      const usuariosFiltrados = usuarios.filter((usuario) =>
         usuario.nome.toLowerCase().includes(consultaNomeUsuario.toLowerCase())
       );
-      localStorage.setItem('usuariosFiltrados', JSON.stringify(usuariosFiltrados));
+      localStorage.setItem(
+        "usuariosFiltrados",
+        JSON.stringify(usuariosFiltrados)
+      );
       setUsuariosFiltrados(usuariosFiltrados);
     } catch (error) {
-      console.error('Erro ao buscar usuários:', error);
+      console.error("Erro ao buscar usuários:", error);
     } finally {
       setLoading(false);
     }
   };
-  
 
   const handleUsuarioSelecionado = (usuario) => {
     setUsuarioSelecionado(usuario);
   };
 
   const handleEditarUsuario = () => {
-    navigate('/alteracao-cadastro', { state: { usuario: usuarioSelecionado } });
+    navigate("/alteracao-cadastro", { state: { usuario: usuarioSelecionado } });
   };
 
   const handleDeletarUsuario = async () => {
     try {
       const response = await api.delete(`usuario/${usuarioSelecionado.id}`);
       if (response.status === 204) {
-        setUsuariosFiltrados(usuariosFiltrados.filter((u) => u.id !== usuarioSelecionado.id));
+        setUsuariosFiltrados(
+          usuariosFiltrados.filter((u) => u.id !== usuarioSelecionado.id)
+        );
         setUsuarioSelecionado(null);
-        alert('Usuário deletado com sucesso!');
+        alert("Usuário deletado com sucesso!");
       } else {
-        alert('Erro ao deletar usuário');
+        alert("Erro ao deletar usuário");
       }
     } catch (error) {
-      console.error('Erro ao deletar usuário:', error);
+      console.error("Erro ao deletar usuário:", error);
     }
   };
 
@@ -65,11 +76,16 @@ const ConsultaAdministrador = () => {
   return (
     <div>
       <Header />
-      <div className='adm'>
+      <div className="adm">
         <form onSubmit={handleSubmit}>
           <h2>Consultar Usuários</h2>
           <label> Nome do Usuário </label>
-          <input type="text" id="consultaNomeUsuario" value={consultaNomeUsuario} onChange={handleConsultaNomeUsuarioChange} />
+          <input
+            type="text"
+            id="consultaNomeUsuario"
+            value={consultaNomeUsuario}
+            onChange={handleConsultaNomeUsuarioChange}
+          />
           <button type="submit">Pesquisar</button>
         </form>
         {loading ? (
@@ -84,11 +100,18 @@ const ConsultaAdministrador = () => {
             </thead>
             <tbody>
               {usuariosFiltrados.map((usuario) => (
-                <tr key={usuario.id} onClick={() => handleUsuarioSelecionado(usuario)}>
+                <tr
+                  key={usuario.id}
+                  onClick={() => handleUsuarioSelecionado(usuario)}
+                >
                   <td>{usuario.nome}</td>
                   <td>
-                    <button type="button" onClick={handleEditarUsuario}>Editar</button>
-                    <button type="button" onClick={handleDeletarUsuario}>Deletar</button>
+                    <button type="button" onClick={handleEditarUsuario}>
+                      Editar
+                    </button>
+                    <button type="button" onClick={handleDeletarUsuario}>
+                      Deletar
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -102,7 +125,3 @@ const ConsultaAdministrador = () => {
 };
 
 export { ConsultaAdministrador };
-
-
-
-
