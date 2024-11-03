@@ -21,10 +21,14 @@ const AlteracaoViagem = () => {
   const [ponto_paciente, setPontoPaciente] = useState("");
   const [obs, setObservacoes] = useState("");
   const [ac, setAcompanhanteNecessario] = useState(false);
+  const [ac_id, setAcompanhanteID] = useState(null);
   const [nome_acompanhante, setNomeAcompanhante] = useState("");
   const [rg_acompanhante, setRgAcompanhante] = useState("");
   const [end_acompanhante, setEndAcompanhante] = useState("");
   const [ponto_acompanhante, setPontoAcompanhante] = useState("");
+
+  // Exibir os dados das viagens no console
+  //console.log("Dados das Viagens:", ac_id);
 
   // Verifica se userData existe e redireciona para a tela de login se não existir
   useEffect(() => {
@@ -36,6 +40,7 @@ const AlteracaoViagem = () => {
   useEffect(() => {
     if (location.state && location.state.viagem) {
       const viagem = location.state.viagem;
+      const acompanhante = location.state.acompanhante;
       setData_Select(new Date(viagem.data_select));
       setHora_Select(new Date(`1970-01-01T${viagem.hora_select}`));
       setNomePaciente(viagem.nome_paciente);
@@ -46,12 +51,15 @@ const AlteracaoViagem = () => {
       setPontoPaciente(viagem.ponto_paciente);
       setObservacoes(viagem.obs);
       setAcompanhanteNecessario(viagem.ac);
-      if (viagem.ac) {
-        setNomeAcompanhante(viagem.nome_acompanhante);
-        setRgAcompanhante(viagem.rg_acompanhante);
-        setEndAcompanhante(viagem.end_acompanhante);
-        setPontoAcompanhante(viagem.ponto_acompanhante);
+      setAcompanhanteID(viagem.ac_id);
+      if (viagem.ac && viagem.ac_id) {
+        setNomeAcompanhante(acompanhante[0].nome_acompanhante);
+        setRgAcompanhante(acompanhante[0].rg_acompanhante);
+        setEndAcompanhante(acompanhante[0].end_acompanhante);
+        setPontoAcompanhante(acompanhante[0].ponto_acompanhante);
       }
+      // Exibir os dados das viagens no console
+      //console.log("Dados das Viagens:", JSON.stringify(acompanhante));
     }
   }, [location.state]);
 
