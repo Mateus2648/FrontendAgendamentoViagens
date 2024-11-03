@@ -5,8 +5,8 @@ import { Header } from "../../Componentes/Header/Header"; // Importa o component
 import { api } from "../../Services/api"; // Importa a instância da API para fazer requisições
 import "./styles.css"; // Importa o arquivo de estilos CSS
 
-const ConsultaViagem = () => {
-  const [consulta, setConsulta] = useState("");
+const DetalhesViagem = () => {
+  const [detalhes, setDetalhes] = useState("");
   const [viagens, setViagens] = useState([]);
   const [acompanhantes, setAcompanhante] = useState(null);
   const [viagensFiltradas, setViagensFiltradas] = useState([]);
@@ -42,19 +42,19 @@ const ConsultaViagem = () => {
   }, []);
 
   /*const handleConsultaChange = (e) => {
-    setConsulta(e.target.value);
-  };
-  */
+      setConsulta(e.target.value);
+    };
+    */
 
   /* const handlePesquisar = () => {
-    const viagensFiltradas = viagens.filter((viagem) =>
-      viagem.nome_paciente?.toLowerCase().includes(consulta.toLowerCase())
-    );
-    setViagensFiltradas(viagensFiltradas);
-    if (viagensFiltradas.length === 0) {
-      alert("Nenhuma viagem encontrada com o nome do paciente pesquisado.");
-    }
-  }; */
+      const viagensFiltradas = viagens.filter((viagem) =>
+        viagem.nome_paciente?.toLowerCase().includes(consulta.toLowerCase())
+      );
+      setViagensFiltradas(viagensFiltradas);
+      if (viagensFiltradas.length === 0) {
+        alert("Nenhuma viagem encontrada com o nome do paciente pesquisado.");
+      }
+    }; */
 
   const handleViagemSelecionada = (viagem) => {
     setViagemSelecionada(viagem);
@@ -198,4 +198,4 @@ const ConsultaViagem = () => {
   );
 };
 
-export { ConsultaViagem };
+export { DetalheViagem };
