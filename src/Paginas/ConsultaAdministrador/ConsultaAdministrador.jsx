@@ -45,11 +45,12 @@ const ConsultaAdministrador = () => {
 
   const handleUsuarioSelecionado = (usuario) => {
     setUsuarioSelecionado(usuario);
-  };
+    console.log("Usuário selecionado:", usuario); // Adicione este log para depuração
+};
 
-  const handleEditarUsuario = () => {
-    navigate("/alteracao-cadastro", { state: { usuario: usuarioSelecionado } });
-  };
+const handleEditarUsuario = (usuario) => {
+  navigate("/alteracao-cadastro", { state: { usuario } });
+};
 
   const handleDeletarUsuario = async () => {
     try {
@@ -99,23 +100,20 @@ const ConsultaAdministrador = () => {
               </tr>
             </thead>
             <tbody>
-              {usuariosFiltrados.map((usuario) => (
-                <tr
-                  key={usuario.id}
-                  onClick={() => handleUsuarioSelecionado(usuario)}
-                >
-                  <td>{usuario.nome}</td>
-                  <td>
-                    <button type="button" onClick={handleEditarUsuario}>
-                      Editar
-                    </button>
-                    <button type="button" onClick={handleDeletarUsuario}>
-                      Deletar
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
+    {usuariosFiltrados.map((usuario) => (
+        <tr key={usuario.id}>
+            <td>{usuario.nome}</td>
+            <td>
+                <button type="button" onClick={() => handleEditarUsuario(usuario)}>
+                    Editar
+                </button>
+                <button type="button" onClick={handleDeletarUsuario}>
+                    Deletar
+                </button>
+            </td>
+        </tr>
+    ))}
+</tbody>
           </table>
         )}
       </div>
