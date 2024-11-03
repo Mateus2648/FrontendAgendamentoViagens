@@ -4,7 +4,7 @@
     bottom: 10px;
     left: 0px;
     z-index: 9999;
-    top: calc(60px + 40px); /* Ajuste o valor 60px para a altura real do seu header */
+    top: calc(60px + 50px); /* Ajuste o valor 60px para a altura real do seu header */
   }
   
   .accessibility-toggle {
@@ -28,8 +28,8 @@
   }
   
   .accessibility-toggle .icon-accessibility {
-    width: 30px; /* Ajuste conforme necessário */
-    height: 30px; /* Ajuste conforme necessário */
+    width: 30px; /* Ajuste conforme necessï¿½rio */
+    height: 30px; /* Ajuste conforme necessï¿½rio */
   }
     
   .accessibility-menu {
@@ -65,7 +65,7 @@
   }
 
   .accessibility-title {
-    font-size: 20px !important; /* Tamanho de fonte padrão */
+    font-size: 20px !important; /* Tamanho de fonte padrï¿½o */
     font-weight: bold;
     margin-bottom: 10px;
     color: rgb(24, 24, 24); /* Cor do texto */

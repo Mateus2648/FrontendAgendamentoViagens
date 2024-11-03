@@ -77,6 +77,23 @@ header .header__content nav .nav__button .user-info span {
   margin-right: 10px; 
 }
 
+.menu-button {
+  display: none; /* Inicialmente escondido */
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 10px 15px; /* Adiciona espaço interno */
+  /* Ajusta a largura automaticamente ao conteúdo */
+  width: auto; /* Isso é o padrão, mas pode ser explicitado */
+}
+
+.menu-button:hover {
+  background-color: var(--secondary-color);
+}
+
+
 /* Responsividade para telas menores */
 @media (max-width: 768px) {
   header {
@@ -101,9 +118,50 @@ header .header__content nav .nav__button .user-info span {
 
   header .header__content nav .nav__button {
     flex-direction: column;
+    display: none; /* Esconder as opções inicialmente */
+    width: 100%; /* Garantir que as opções ocupem a largura total */
+    text-align: center; /* Centralizar texto */
   }
 
   header .header__content nav .user-info {
     margin-top: 10px;
   }
+
+  /* Mostrar o botão do menu em telas menores */
+  .menu-button {
+    display: block; /* Mostrar o botão do menu */
+  }
+
+  /* Classe para mostrar o menu */
+  .menu-active {
+    display: flex; /* Mostrar opções quando ativo */
+  }
+}
+
+/* Esconder as opções inicialmente em dispositivos móveis */
+header .header__content nav .nav__button {
+  display: none; /* Esconder opções por padrão */
+  flex-direction: column;
+  width: 100%; /* Garantir que as opções ocupem a largura total */
+}
+
+/* Mostrar o menu quando ativo */
+header .header__content nav .nav__button.menu-active {
+  display: flex; /* Mostrar opções quando ativo */
+}
+
+/* Exibir opções do menu em telas desktop */
+@media (min-width: 769px) {
+  header .header__content nav .nav__button {
+    display: flex; /* Mostrar opções normalmente em desktop */
+    flex-direction: row; /* Manter a direção em linha */
+  }
+}
+.logout-container {
+  margin-top: 5px; /* Adiciona um espaço acima do link Sair */
+}
+
+.logout-link {
+  color: #cbcbcb; /* Cor do link */
+  text-decoration: none; /* Remove sublinhado */
 }
