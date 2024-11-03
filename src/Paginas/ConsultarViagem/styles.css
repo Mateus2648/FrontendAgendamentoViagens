@@ -1,3 +1,8 @@
+.bodyconsul {
+  margin-top: 100%;
+  margin-bottom: 10%;
+}
+
 .consul {
   display: flex;
   flex-direction: column;
@@ -11,6 +16,32 @@
   margin-top: 80px;
   margin-bottom: 80px;
 }
+
+.detalhes-viagem {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.consul button {
+  background-color: #0f014d;
+  color: white;
+  padding: 10px 20px;
+  margin: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.consul button:hover {
+  background-color: #2700d6;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
