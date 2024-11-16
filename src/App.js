@@ -8,6 +8,7 @@ import { CadastroViagem } from "./Paginas/CadastroViagem/CadastroViagem.jsx";
 import { ConsultaAdministrador } from "./Paginas/ConsultaAdministrador/ConsultaAdministrador.jsx";
 import { ConsultaViagem } from "./Paginas/ConsultarViagem/ConsultarViagem.jsx";
 import { CriarConta } from "./Paginas/CriarConta/CriarConta.jsx";
+import { DetalheViagem } from "./Paginas/DetalhesViagem/DetalhesViagem.jsx";
 import { Home } from "./Paginas/Home/Home.jsx";
 import { Login } from "./Paginas/Login/Login.jsx";
 import { Menu } from "./Paginas/Menu/Menu.jsx";
@@ -27,6 +28,7 @@ function App() {
           <Route path="/cadastro-viagem" element={<CadastroViagem />} />
           <Route path="/cadastro-motorista" element={<CadastroMotorista />} />
           <Route path="/consulta-viagem" element={<ConsultaViagem />} />
+          <Route path="/detalhes-viagem" element={<DetalheViagem />} />
           <Route path="/alteracao-viagem" element={<AlteracaoViagem />} />
           <Route path="/alteracao-cadastro" element={<AlteracaoCadastro />} />
           <Route path="/menu" element={<Menu />} />

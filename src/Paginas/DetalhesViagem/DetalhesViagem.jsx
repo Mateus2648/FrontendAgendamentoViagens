@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react"; // Importa React e hooks necessários
-import { useNavigate } from "react-router-dom"; // Importa o hook useNavigate para navegação
+import { useLocation, useNavigate } from "react-router-dom"; // Importa os hooks useNavigate e useLocation
 import { Footer } from "../../Componentes/Footer/Footer.jsx"; // Importa o componente Footer
 import { Header } from "../../Componentes/Header/Header"; // Importa o componente Header
 import { api } from "../../Services/api"; // Importa a instância da API para fazer requisições
 import "./styles.css"; // Importa o arquivo de estilos CSS
 
-const DetalhesViagem = () => {
-  const [detalhes, setDetalhes] = useState("");
-  const [viagens, setViagens] = useState([]);
-  const [acompanhantes, setAcompanhante] = useState(null);
-  const [viagensFiltradas, setViagensFiltradas] = useState([]);
+const DetalheViagem = () => {
   const [viagemSelecionada, setViagemSelecionada] = useState(null);
+  const [acompanhante, setAcompanhante] = useState([]);
   const navigate = useNavigate();
+  const location = useLocation(); // Usando useLocation para acessar o estado
   const userData = JSON.parse(localStorage.getItem("userData"));
 
   useEffect(() => {
@@ -21,108 +19,42 @@ const DetalhesViagem = () => {
   }, [userData, navigate]);
 
   useEffect(() => {
-    const fetchViagens = async () => {
-      try {
-        const response = await api.get("viagem");
-        setViagens(response.data);
-        setViagensFiltradas(response.data); // Armazena todas as viagens no estado de filtradas inicialmente
-        const AC = response.data.map((viagem) => viagem.ac);
-        const AD = response.data.map((viagem) => viagem.ac_id);
+    const fetchAcompanhante = async () => {
+      if (location.state && location.state.viagem) {
+        const viagemSelecionada = location.state.viagem;
+        setViagemSelecionada(viagemSelecionada);
+        const AD_acompanhante = viagemSelecionada.ac_id;
 
-        if (AC[0]) {
-          const responseAcompanhante = await api.get(`acompanhante/${AD[0]}`);
-          setAcompanhante(responseAcompanhante.data);
+        try {
+          const response = await api.get(`acompanhante/${AD_acompanhante}`);
+          setAcompanhante(response.data || null); // Caso acompanhante seja null
+        } catch (error) {
+          console.error("Erro ao buscar acompanhante:", error);
         }
-      } catch (error) {
-        console.error("Erro ao buscar viagens:", error);
       }
     };
 
-    fetchViagens();
-  }, []);
+    fetchAcompanhante();
+  }, [location.state]);
 
-  /*const handleConsultaChange = (e) => {
-      setConsulta(e.target.value);
-    };
-    */
-
-  /* const handlePesquisar = () => {
-      const viagensFiltradas = viagens.filter((viagem) =>
-        viagem.nome_paciente?.toLowerCase().includes(consulta.toLowerCase())
-      );
-      setViagensFiltradas(viagensFiltradas);
-      if (viagensFiltradas.length === 0) {
-        alert("Nenhuma viagem encontrada com o nome do paciente pesquisado.");
-      }
-    }; */
-
-  const handleViagemSelecionada = (viagem) => {
-    setViagemSelecionada(viagem);
-  };
+  // Exibir os dados das viagens no console
+  //console.log("Dados da Viagem:", viagemSelecionada);
+  //console.log("Dados do Acompanhante:", acompanhante);
 
   const handleEditarViagem = () => {
     navigate("/alteracao-viagem", {
-      state: { viagem: viagemSelecionada, acompanhante: acompanhantes },
+      state: { viagem: viagemSelecionada, acompanhante: acompanhante },
     });
-  };
-
-  const handleDeletarViagem = async () => {
-    try {
-      const response = await api.delete(`viagem/${viagemSelecionada.id}`);
-      if (response.status === 204) {
-        setViagens(
-          viagens.filter((viagem) => viagem.id !== viagemSelecionada.id)
-        );
-        setViagemSelecionada(null);
-        setViagensFiltradas(
-          viagensFiltradas.filter(
-            (viagem) => viagem.id !== viagemSelecionada.id
-          )
-        );
-        alert("Viagem deletada com sucesso!");
-      } else {
-        alert("Erro ao deletar viagem");
-      }
-    } catch (error) {
-      console.error("Erro ao deletar viagem:", error);
-    }
   };
 
   return (
     <div>
       <Header />
       <div className="consul">
-        <h2>Consultar Viagens</h2>
-        {/* Renderiza todas as viagens carregadas */}
-
-        {viagensFiltradas.length > 0 && (
-          <table>
-            <thead>
-              <tr>
-                <th>Nome do Paciente</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              {viagensFiltradas.map((viagem) => (
-                <tr key={viagem.id}>
-                  <td>{viagem.nome_paciente}</td>
-                  <td>
-                    <button
-                      type="button"
-                      onClick={() => handleViagemSelecionada(viagem)}
-                    >
-                      Selecionar
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+        <h2>Detalhes da Viagem</h2>
+        {/* Renderiza os detalhes da viagem */}
         {viagemSelecionada && (
           <div>
-            <h3>Detalhes da Viagem</h3>
             <table>
               <tbody>
                 <tr>
@@ -161,34 +93,30 @@ const DetalhesViagem = () => {
                   <td>Observações:</td>
                   <td>{viagemSelecionada.obs}</td>
                 </tr>
-                {acompanhantes &&
-                  acompanhantes.map((acompanhante) => (
-                    <>
-                      <tr>
-                        <td>Nome do Acompanhante:</td>
-                        <td>{acompanhante.nome_acompanhante}</td>
-                      </tr>
-                      <tr>
-                        <td>RG do Acompanhante:</td>
-                        <td>{acompanhante.rg_acompanhante}</td>
-                      </tr>
-                      <tr>
-                        <td>Endereço do Acompanhante:</td>
-                        <td>{acompanhante.end_acompanhante}</td>
-                      </tr>
-                      <tr>
-                        <td>Ponto do Acompanhante:</td>
-                        <td>{acompanhante.ponto_acompanhante}</td>
-                      </tr>
-                    </>
-                  ))}
+                {acompanhante.map((acompanhante, index) => (
+                  <React.Fragment key={index}>
+                    <tr>
+                      <td>Nome do Acompanhante:</td>
+                      <td>{acompanhante.nome_acompanhante}</td>
+                    </tr>
+                    <tr>
+                      <td>RG do Acompanhante:</td>
+                      <td>{acompanhante.rg_acompanhante}</td>
+                    </tr>
+                    <tr>
+                      <td>Endereço do Acompanhante:</td>
+                      <td>{acompanhante.end_acompanhante}</td>
+                    </tr>
+                    <tr>
+                      <td>Ponto do Acompanhante:</td>
+                      <td>{acompanhante.ponto_acompanhante}</td>
+                    </tr>
+                  </React.Fragment>
+                ))}
               </tbody>
             </table>
             <button type="button" onClick={handleEditarViagem}>
               Editar
-            </button>
-            <button type="button" onClick={handleDeletarViagem}>
-              Deletar
             </button>
           </div>
         )}
